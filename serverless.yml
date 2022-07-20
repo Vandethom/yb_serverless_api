@@ -36,6 +36,12 @@ functions:
       - http:
           path: '/recipes'
           method: get
+  getRecipe:
+    handler: src/lambda/getRecipe.handler
+    events:
+      - http:
+          path: '/recipe/{uuid}'
+          method: get
 
 resources:
   Resources:
