@@ -1,0 +1,52 @@
+org: vandenthom
+app: yummying-bird-serverless-api
+service: yummying-bird-serverless-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-3
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - Fn::GetAtt: [ Recipe, Arn ]
+  environment:
+    RECIPE_TABLE: 'Recipe'
+
+functions:
+  createRecipe:
+    handler: src/lambda/createRecipe.handler
+    events:
+      - http:
+          path: '/recipe'
+          method: post
+  getRecipes:
+    handler: src/lambda/getRecipes.handler
+    events:
+      - http:
+          path: '/recipes'
+          method: get
+
+resources:
+  Resources:
+    Recipe:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Recipe
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: uuid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: uuid
+            KeyType: HASH
