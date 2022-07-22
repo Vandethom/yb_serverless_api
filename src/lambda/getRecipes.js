@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk');
-
 const buildResponse = require('../middleware/buildResponse.js');
+
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const getRecipes = async ( event ) => {

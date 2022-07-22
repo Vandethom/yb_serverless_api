@@ -1,8 +1,7 @@
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
-
-
 const buildResponse = require('../middleware/buildResponse.js');
+
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 
