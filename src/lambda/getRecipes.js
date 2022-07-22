@@ -1,7 +1,6 @@
 const AWS = require('aws-sdk');
-const serverless = require('serverless-http');
 
-// const buildResponse = require('./middlewares/buildResponse.js');
+const buildResponse = require('../middleware/buildResponse.js');
 
 const RECIPES_TABLE = 'Recipe';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -20,10 +19,7 @@ const getRecipes = async ( event ) => {
         console.error( error )
     }
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify(recipes)
-    }
+    return buildResponse(200, recipes)
 };
 
 

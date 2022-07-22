@@ -1,7 +1,8 @@
-"use strict";
-
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
+
+
+const buildResponse = require('../middleware/buildResponse.js');
 
 const RECIPES_TABLE = 'Recipe';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -21,17 +22,12 @@ const createRecipe = async ( event ) => {
         updatedAt
     }
 
-    console.log('This is the item to be created ::: ', newRecipe)
-
     await dynamodb.put({
         TableName: RECIPES_TABLE,
         Item: newRecipe
     }).promise();
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(newRecipe),
-  };
+  return buildResponse(201, newRecipe);
 };
 
 module.exports = {

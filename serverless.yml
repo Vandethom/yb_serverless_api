@@ -42,6 +42,12 @@ functions:
       - http:
           path: '/recipe/{uuid}'
           method: get
+  updateRecipe:
+    handler: src/lambda/updateRecipe.handler
+    events:
+      - http:
+          path: '/recipe/{uuid}'
+          method: put
 
 resources:
   Resources:
