@@ -1,13 +1,11 @@
 const AWS = require('aws-sdk');
 
 const buildResponse = require('../middleware/buildResponse.js');
-
-const RECIPES_TABLE = 'Recipe';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const getRecipes = async ( event ) => {
     const params = {
-        TableName: RECIPES_TABLE
+        TableName: process.env.RECIPE_TABLE
     };
 
     let recipes;
@@ -19,7 +17,7 @@ const getRecipes = async ( event ) => {
         console.error( error )
     }
 
-    return buildResponse(200, recipes)
+    return buildResponse( 200, recipes )
 };
 
 

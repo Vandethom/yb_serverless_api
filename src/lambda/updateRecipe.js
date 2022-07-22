@@ -1,9 +1,6 @@
 const AWS = require('aws-sdk');
-const { v4: uuidv4 } = require('uuid');
 
 const buildResponse = require('../middleware/buildResponse.js');
-
-const RECIPES_TABLE = 'Recipe';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 
@@ -13,7 +10,7 @@ const updateRecipe = async ( event ) => {
     const updatedAt = new Date();
 
     await dynamodb.update({
-        TableName: RECIPES_TABLE,
+        TableName: process.env.RECIPE_TABLE,
         Key: { uuid },
         UpdateExpression: `set ${ updateValue } = :updateValue`,
         ExpressionAttributeValues: {

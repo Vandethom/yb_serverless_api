@@ -3,8 +3,6 @@ const { v4: uuidv4 } = require('uuid');
 
 
 const buildResponse = require('../middleware/buildResponse.js');
-
-const RECIPES_TABLE = 'Recipe';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 
@@ -23,11 +21,11 @@ const createRecipe = async ( event ) => {
     }
 
     await dynamodb.put({
-        TableName: RECIPES_TABLE,
+        TableName: process.env.RECIPE_TABLE,
         Item: newRecipe
     }).promise();
 
-  return buildResponse(201, newRecipe);
+  return buildResponse( 201, newRecipe );
 };
 
 module.exports = {
