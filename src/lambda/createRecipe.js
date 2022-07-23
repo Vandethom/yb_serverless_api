@@ -29,7 +29,7 @@ const createRecipe = async ( event ) => {
 
 		return buildResponse( 201, newRecipe );
 	} catch ( e ) {
-		handleCustomError( e );	
+		return handleCustomError( e );	
 	}
 };
 

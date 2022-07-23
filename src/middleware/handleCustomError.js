@@ -27,7 +27,7 @@ const handleCustomError = ( e ) => {
             statusCode: 400,
             headers,
             body: JSON.stringify({ 
-                message: JSON.stringify( { error: `Invalid request body format : ${ e.message }`  } )
+                message: { error: `Invalid request body format : ${ e.message }`  }
             })}
     }
 

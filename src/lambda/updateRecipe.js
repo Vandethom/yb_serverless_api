@@ -1,6 +1,9 @@
 const AWS = require('aws-sdk');
 
+const handleCustomError = require('../middleware/handleCustomError.js')
 const buildResponse = require('../middleware/buildResponse.js');
+const recipeModel = require('../data/recipe.js')
+
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 
@@ -22,9 +25,16 @@ const updateRecipe = async ( event ) => {
     ExpressionAttributeValues
   };
 
-  await dynamodb.update( params ).promise();
+  try {
+    await recipeModel.validate( newRecipe, { abortEarly: false } );
+    await dynamodb.update( params ).promise();
 
-  return buildResponse( 200, { message: 'Success updating recipe', recipe: body } )
+    return buildResponse( 200, { message: 'Success updating recipe', recipe: body } )
+  } catch (e) {
+    return handleCustomError( e )
+  }
+
+
 }
 
 
