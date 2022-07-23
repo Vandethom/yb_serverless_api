@@ -8,8 +8,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const createRecipe = async ( event ) => {
     const { name, durationTime } = JSON.parse( event.body );
     const uuid = uuidv4();
-    const createdAt = new Date();
-    const updatedAt = new Date();
+    const createdAt = new Date().toISOString();
+    const updatedAt = new Date().toISOString();
 
     const newRecipe = {
         uuid,
