@@ -18,36 +18,64 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
-          Resource:
-            - Fn::GetAtt: [ Recipe, Arn ]
-  environment:
-    RECIPE_TABLE: 'Recipe'
+          Resource: '*'
 
-functions:
+functions:  
+  createUser:
+    handler: src/lambda/user/createUser.handler
+    events:
+      - http:
+          path: '/auth/signup'
+          method: post
+    environment:
+      RECIPE_TABLE: 'User'
+
+  login: 
+    handler: src/lambda/user/login.handler
+    events:
+      - http:
+          path: '/auth/login'
+          method: post
+    environment:
+      RECIPE_TABLE: 'User'
+
+
   createRecipe:
-    handler: src/lambda/createRecipe.handler
+    handler: src/lambda/recipe/createRecipe.handler
     events:
       - http:
           path: '/recipe'
           method: post
+    environment:
+      RECIPE_TABLE: 'Recipe'
+
   getRecipes:
-    handler: src/lambda/getRecipes.handler
+    handler: src/lambda/recipe/getRecipes.handler
     events:
       - http:
           path: '/recipes'
           method: get
+    environment:
+      RECIPE_TABLE: 'Recipe'
+
   getRecipe:
-    handler: src/lambda/getRecipe.handler
+    handler: src/lambda/recipe/getRecipe.handler
     events:
       - http:
           path: '/recipe/{uuid}'
           method: get
+    environment:
+      RECIPE_TABLE: 'Recipe'
+
   updateRecipe:
-    handler: src/lambda/updateRecipe.handler
+    handler: src/lambda/recipe/updateRecipe.handler
     events:
       - http:
           path: '/recipe/{uuid}'
           method: put
+    environment:
+      RECIPE_TABLE: 'Recipe'
+
 
 resources:
   Resources:
@@ -62,3 +90,29 @@ resources:
         KeySchema:
           - AttributeName: uuid
             KeyType: HASH
+    User:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: User
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: uuid
+            AttributeType: S
+          - AttributeName: firstName
+            AttributeType: S
+          - AttributeName: lastName
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+          - AttributeName: password
+            AttributeType: S
+        KeySchema:
+          - AttributeName: uuid
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: email
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL

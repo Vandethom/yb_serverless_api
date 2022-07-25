@@ -16,6 +16,7 @@ const recipeModel = yup.object().shape(	{
     isGlutenFree: yup.boolean().required(),
     isPorkFree: yup.boolean().required(),
 
+    steps: yup.array(),
     options: yup.array(),
     tools: yup.array(),
 

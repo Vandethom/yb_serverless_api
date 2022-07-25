@@ -1,9 +1,9 @@
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 
-const handleCustomError = require('../middleware/handleCustomError.js')
-const buildResponse = require('../middleware/buildResponse.js');
-const recipeModel = require('../data/recipe.js')
+const handleCustomError = require('../../middleware/handleCustomError.js')
+const buildResponse = require('../../middleware/buildResponse.js');
+const recipeModel = require('../../data/recipe.js')
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
