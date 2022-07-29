@@ -1,14 +1,14 @@
-const AWS = require('aws-sdk');
-const { v4: uuidv4 } = require('uuid');
+const AWS = require( 'aws-sdk' );
+const { v4: uuidv4 } = require( 'uuid' );
 
-const handleCustomError = require('../../middleware/handleCustomError.js')
-const buildResponse = require('../../middleware/buildResponse.js');
-const recipeModel = require('../../data/recipe.js')
+const handleCustomError = require( '../../middleware/handleCustomError.js' )
+const buildResponse = require( '../../middleware/buildResponse.js' );
+const recipeModel = require( '../../data/recipe.js' )
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 const createRecipe = async ( event ) => {	
-	const recipe = JSON.parse(event.body);
+	const recipe = JSON.parse( event.body );
 	const uuid = uuidv4();
 	const createdAt = new Date().toISOString();
 	const updatedAt = new Date().toISOString();

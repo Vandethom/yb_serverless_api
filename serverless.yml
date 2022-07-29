@@ -5,7 +5,7 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   region: eu-west-3
   iam:
     role:
@@ -38,7 +38,6 @@ functions:
           method: post
     environment:
       RECIPE_TABLE: 'User'
-
 
   createRecipe:
     handler: src/lambda/recipe/createRecipe.handler

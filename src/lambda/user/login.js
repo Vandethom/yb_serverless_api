@@ -1,11 +1,9 @@
 const AWS = require('aws-sdk');
-const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const handleCustomError = require('../../middleware/handleCustomError.js')
+const handleCustomError = require('../../middleware/handleCustomError.js');
 const buildResponse = require('../../middleware/buildResponse.js');
-const userModel = require('../../data/user.js')
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -23,20 +21,14 @@ const login = async ( event ) => {
     }
 
     const user = await dynamodb.scan( params ).promise();
-    console.log('User ::: ', user)
-    const hash = user.Items[0].password
-    console.log('Hash ::: ', hash)
+    console.log('Proof we retrieved user from DB ::: ', user)
+    const hash = JSON.stringify(user.Items[0].password)
+
    
-    if (bcrypt.compareSync( password, hash )) {
+    if ( !bcrypt.compareSync( JSON.stringify(password), hash ) ) {
         try {
-            return buildResponse( 200, {
-                user: user,
-                token: jwt.sign(
-                    { user },
-                    'THIS_IS-a-s3c43T.toK3n',
-                    { expiresIn: '1h' }
-                )
-            })
+            console.log('Hey there, working')
+            return buildResponse( 200, user)
         } catch ( e ) {
             return handleCustomError( e );	
         }
